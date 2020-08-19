@@ -418,8 +418,17 @@ if __name__ == "__main__":
 
     elif blastm == 'y':
         pick, query1, str2, str4 = blastChoice(blastm)
+        
+        print("DV modifications")
+        print("test outputs")
+        print(query1[0])
+        print(str2)
+        
         assert pick == no_pb, "The number of queries does not match the number of probes, wrong XML file?" #check if the correct file was used for blast
-        assert query1[0] == str2, "The first query is not the same as the first sequence in the blast_picks.fasta file" #check if the correct file was used for blast
+        # DV - for some reason the seq in the XML file is shorter than the query seq and this was why it throws the error. 
+        # BLAST just returns the matched portion? So changing == to in solves this issue. is there a way to automate this part using cmd line blast+ tools
+        #assert query1[0] == str2, "The first query is not the same as the first sequence in the blast_picks.fasta file" #check if the correct file was used for blast
+        assert query1[0] in str2, "The first query is not the same as the first sequence in the blast_picks.fasta file" #check if the correct file was used for blast
         assert query1[-1] in str4, "The last query is not contained in the last sequence in the blast_picks.fasta file" #check if the correct file was used for blast
 
         df = pd.read_csv(mb_userpath+'/blast_results.csv', sep = ",", index_col = None, engine = 'python')
